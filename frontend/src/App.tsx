@@ -1,4 +1,3 @@
-
 import {
   BrowserRouter,
   Navigate,
@@ -10,24 +9,12 @@ import { AuthProvider } from "./context/AuthContext";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
+import Tasks from "./pages/Tasks";
+
 import ProtectedRoute from "./components/ProtectedRoute";
-
-function DashboardPlaceholder() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-[#0b1120] text-white">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold">
-          TaskFlow Dashboard
-        </h1>
-
-        <p className="mt-3 text-gray-400">
-          Authentication successful.
-          Dashboard is coming next.
-        </p>
-      </div>
-    </main>
-  );
-}
+import DashboardLayout from "./layouts/DashboardLayout";
 
 function App() {
   return (
@@ -35,23 +22,31 @@ function App() {
       <AuthProvider>
         <Routes>
 
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-          <Route
-            path="/register"
-            element={<Register />}
-          />
-
+          {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
-            <Route
-              path="/dashboard"
-              element={<DashboardPlaceholder />}
-            />
+            <Route element={<DashboardLayout />}>
+              <Route
+                path="/dashboard"
+                element={<Dashboard />}
+              />
+
+              <Route
+                path="/projects"
+                element={<Projects />}
+              />
+
+              <Route
+                path="/tasks"
+                element={<Tasks />}
+              />
+            </Route>
           </Route>
 
+          {/* Default Routes */}
           <Route
             path="/"
             element={<Navigate to="/dashboard" replace />}
@@ -59,7 +54,7 @@ function App() {
 
           <Route
             path="*"
-            element={<Navigate to="/" replace />}
+            element={<Navigate to="/dashboard" replace />}
           />
 
         </Routes>

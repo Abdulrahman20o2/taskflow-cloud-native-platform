@@ -49,3 +49,12 @@ export interface AuthToken {
   access_token: string;
   token_type: "bearer";
 }
+export interface Activity {
+  id: number;
+  user_id: number | null;
+  project_id: number | null;
+  task_id: number | null;
+  action: string;
+  description: string;
+  created_at: string;
+}
