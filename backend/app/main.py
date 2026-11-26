@@ -1,8 +1,7 @@
 
 from fastapi import FastAPI
 
-from app.api.routes import health, auth
-
+from app.api.routes import health, auth, projects
 
 app = FastAPI(
     title="TaskFlow API",
@@ -17,7 +16,7 @@ app.include_router(
     auth.router,
     prefix="/api/v1"
 )
-
+app.include_router(projects.router, prefix="/api/v1")
 
 @app.get("/")
 def root():
