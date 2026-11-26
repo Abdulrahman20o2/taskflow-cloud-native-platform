@@ -1,8 +1,14 @@
 
 from fastapi import FastAPI
 
-from app.api.routes import health, auth, projects, tasks
-app = FastAPI(
+from app.api.routes import (
+    health,
+    auth,
+    projects,
+    tasks,
+    activities,
+    dashboard
+)app = FastAPI(
     title="TaskFlow API",
     description="Cloud-Native Team Task Management Platform",
     version="1.0.0"
@@ -17,6 +23,8 @@ app.include_router(
 )
 app.include_router(projects.router, prefix="/api/v1")
 app.include_router(tasks.router, prefix="/api/v1")
+app.include_router(activities.router, prefix="/api/v1")
+app.include_router(dashboard.router, prefix="/api/v1")
 @app.get("/")
 def root():
     return {
