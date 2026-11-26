@@ -3,8 +3,9 @@ pipeline {
     agent any
 
     options {
-        disableConcurrentBuilds()
-    }
+    disableConcurrentBuilds()
+    skipDefaultCheckout(true)
+}
 
     environment {
         COMPOSE_PROJECT_NAME = 'taskflow-cloud-native-platform'
