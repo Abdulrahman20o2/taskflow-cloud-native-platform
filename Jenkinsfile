@@ -47,7 +47,27 @@ EOF
             }
         }
     }
+        stage('Deploy TaskFlow') {
+            steps {
+        withCredentials([
+            file(
+                credentialsId: 'taskflow-env',
+                variable: 'TASKFLOW_ENV_FILE'
+            )
+        ]) {
+            sh '''
+                set -eu
+                umask 077
+                cp "$TASKFLOW_ENV_FILE" .env
 
+                trap 'rm -f .env' EXIT
+
+                docker compose up -d --no-build
+                docker compose ps
+            '''
+        }
+    }
+}
     post {
         success {
             echo 'TaskFlow CI completed successfully!'
