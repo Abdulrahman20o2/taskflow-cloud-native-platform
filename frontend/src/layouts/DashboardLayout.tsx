@@ -8,6 +8,7 @@ import {
   Cloud,
   Bell,
   User,
+  Activity,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -26,6 +27,11 @@ const navigation = [
     name: "Tasks",
     path: "/tasks",
     icon: CheckSquare,
+  },
+  {
+    name: "Activity",
+    path: "/activity",
+    icon: Activity,
   },
 ];
 
