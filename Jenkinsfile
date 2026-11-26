@@ -7,9 +7,9 @@ pipeline {
     }
 
     environment {
-    COMPOSE_PROJECT_NAME = 'taskflow-cloud-native-platform'
-    DOCKER_CONFIG = '/var/jenkins_home/.docker'
-}
+        COMPOSE_PROJECT_NAME = 'taskflow-cloud-native-platform'
+        DOCKER_CONFIG = '/var/jenkins_home/.docker'
+    }
 
     stages {
         stage('Checkout') {
@@ -23,6 +23,7 @@ pipeline {
                 sh 'git --version'
                 sh 'docker --version'
                 sh 'docker compose version'
+                sh 'docker buildx version'
             }
         }
 
@@ -46,35 +47,37 @@ EOF
                 '''
             }
         }
-    }
+
         stage('Deploy TaskFlow') {
             steps {
-        withCredentials([
-            file(
-                credentialsId: 'taskflow-env',
-                variable: 'TASKFLOW_ENV_FILE'
-            )
-        ]) {
-            sh '''
-                set -eu
-                umask 077
-                cp "$TASKFLOW_ENV_FILE" .env
+                withCredentials([
+                    file(
+                        credentialsId: 'taskflow-env',
+                        variable: 'TASKFLOW_ENV_FILE'
+                    )
+                ]) {
+                    sh '''
+                        set -eu
+                        umask 077
+                        cp "$TASKFLOW_ENV_FILE" .env
 
-                trap 'rm -f .env' EXIT
+                        trap 'rm -f .env' EXIT
 
-                docker compose up -d --no-build
-                docker compose ps
-            '''
+                        docker compose up -d --no-build
+                        docker compose ps
+                    '''
+                }
+            }
         }
     }
-}
+
     post {
         success {
-            echo 'TaskFlow CI completed successfully!'
+            echo 'TaskFlow CI/CD completed successfully!'
         }
 
         failure {
-            echo 'TaskFlow CI failed. Check the console output.'
+            echo 'TaskFlow pipeline failed. Check the console output.'
         }
     }
 }
