@@ -7,8 +7,9 @@ pipeline {
     }
 
     environment {
-        COMPOSE_PROJECT_NAME = 'taskflow-cloud-native-platform'
-    }
+    COMPOSE_PROJECT_NAME = 'taskflow-cloud-native-platform'
+    DOCKER_CONFIG = '/var/jenkins_home/.docker'
+}
 
     stages {
         stage('Checkout') {
