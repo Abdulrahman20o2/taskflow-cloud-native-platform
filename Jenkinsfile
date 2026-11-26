@@ -49,14 +49,17 @@ EOF
             }
         }
 
+
 stage('Security Scan') {
     steps {
         sh '''
-            trivy image taskflow-cloud-native-platform-backend:latest
-            trivy image taskflow-cloud-native-platform-frontend:latest
+            trivy image --severity HIGH,CRITICAL --exit-code 1 taskflow-cloud-native-platform-backend:latest
+
+            trivy image --severity HIGH,CRITICAL --exit-code 1 taskflow-cloud-native-platform-frontend:latest
         '''
     }
 }
+
 
         stage('Deploy TaskFlow') {
             steps {
