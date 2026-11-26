@@ -49,6 +49,15 @@ EOF
             }
         }
 
+stage('Security Scan') {
+    steps {
+        sh '''
+            trivy image taskflow-cloud-native-platform-backend:latest
+            trivy image taskflow-cloud-native-platform-frontend:latest
+        '''
+    }
+}
+
         stage('Deploy TaskFlow') {
             steps {
                 withCredentials([
